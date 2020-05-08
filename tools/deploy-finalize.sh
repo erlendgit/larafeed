@@ -18,3 +18,6 @@ php artisan route:cache
 echo "Create view cache..."
 php artisan view:clear
 php artisan view:cache
+
+echo "Update folder permissions"
+chmod a+w -Rf storage/
