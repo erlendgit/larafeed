@@ -2,5 +2,5 @@
 set -eo pipefail
 
 git pull --quiet
-composer install --quiet
+vendor/bin/composer install --quiet
 
