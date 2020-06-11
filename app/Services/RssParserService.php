@@ -7,6 +7,7 @@ namespace App\Services;
 use App\RssParsing\RssHeader;
 use App\RssParsing\RssItems;
 use DOMDocument;
+use GuzzleHttp\Client;
 
 class RssParserService {
 
@@ -16,9 +17,21 @@ class RssParserService {
     {
         $doc = new DOMDocument();
         libxml_use_internal_errors(true);
-        $doc->loadXML(file_get_contents($path), LIBXML_NOCDATA);
+        $doc->loadXML($this->readStream($path), LIBXML_NOCDATA);
         $this->objectFromElements = $this->elementToObject($doc->documentElement);
         return $this;
+    }
+
+    public function readStream($streamId) {
+        $client = new Client([
+            'headers' => [
+                'User-Agent' => 'PostmanRuntime/v7.24.1',
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip, deflate, br',
+            ],
+        ]);
+        $response = $client->get($streamId);
+        return $response->getBody()->getContents();
     }
 
     public function parseHeader()
