@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder {
 
@@ -11,11 +12,13 @@ class DatabaseSeeder extends Seeder {
      */
     public function run()
     {
-        tap(new App\User, function ($user) {
-            $user->password = ini_get('DEMO_PASSWORD');
-            $user->email = 'erwitema@gmail.com';
-            $user->name = 'Erlend de Perlend';
-        })->save();
+        if (ini_get('DEMO_PASSWORD') and ini_get('DEMO_MAIL') and ini_get('DEMO_NAME')) {
+            tap(new App\User, function ($user) {
+                $user->password = Hash::make(ini_get('DEMO_PASSWORD'));
+                $user->email = ini_get('DEMO_NAME');
+                $user->name = ini_get('DEMO_NAME');
+            })->save();
+        }
 
         App\Feed::createFromUrl("https://blog.cleancoder.com/atom.xml")->fetchItems();
         App\Feed::createFromUrl("https://simpleprogrammer.com/feed/")->fetchItems();
