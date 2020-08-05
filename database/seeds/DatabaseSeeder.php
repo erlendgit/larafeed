@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder {
     public function run()
     {
         tap(new App\User, function ($user) {
-            $user->password = '$2y$10$j2yMOM984KTSMFsOCUjCWOKMRkbfMtclmj9JzdoXG120fnIWSykXq';
+            $user->password = ini_get('DEMO_PASSWORD');
             $user->email = 'erwitema@gmail.com';
             $user->name = 'Erlend de Perlend';
         })->save();
